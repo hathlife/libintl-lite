@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LIBINTLLITE_SRC_PATH := ../../
+LIBINTLLITE_SRC_PATH := ../
 
 LOCAL_MODULE := libintl
 
