@@ -34,7 +34,9 @@ DEALINGS IN THE SOFTWARE.
 
 #if defined(WIN32) || defined(WINCE)
 typedef unsigned int uint32_t;
+#define DIR_DELIM "\\"
 #else
+#define DIR_DELIM "/"
 #include <stdint.h>
 #endif
 
@@ -58,7 +60,23 @@ libintl_lite_bool_t loadMessageCatalog(const char* domain, const char* moFilePat
 
 	FILE* moFile = NULL;
 	CloseFileHandleGuard closeFileHandleGuard(moFile);
-	moFile = fopen(moFilePath, "rb");
+
+	// Extend file path to include locale/LC_MESSAGES/domain.po
+ 
+	std::string current_language;
+	const char *env_lang = getenv("LANGUAGE");
+	if (env_lang)
+		current_language = env_lang;
+	else
+		return LIBINTL_LITE_BOOL_FALSE;
+
+	std::string basePath(moFilePath);
+	std::string newPath = basePath +
+	DIR_DELIM + current_language +
+	DIR_DELIM + "LC_MESSAGES" +
+	DIR_DELIM + domain + ".mo";
+ 
+	moFile = fopen(newPath.c_str(), "rb");
 	
 	if (!moFile)
 	{
@@ -155,6 +173,7 @@ libintl_lite_bool_t loadMessageCatalogFile(const char* domain, FILE* moFile)
 
 libintl_lite_bool_t bindtextdomain(const char* domain, const char* moFilePath)
 {
+
 	return loadMessageCatalog( domain, moFilePath );
 }
 
