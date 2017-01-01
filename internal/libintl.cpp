@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <stdlib.h>
 #include <string.h>
-
+#include <iostream>
 #if defined(WIN32) || defined(WINCE)
 typedef unsigned int uint32_t;
 #define DIR_DELIM "\\"
@@ -69,7 +69,7 @@ libintl_lite_bool_t loadMessageCatalog(const char* domain, const char* moFilePat
 		current_language = env_lang;
 	else
 		return LIBINTL_LITE_BOOL_FALSE;
-
+ 
 	std::string basePath(moFilePath);
 	std::string newPath = basePath +
 	DIR_DELIM + current_language +
@@ -80,10 +80,17 @@ libintl_lite_bool_t loadMessageCatalog(const char* domain, const char* moFilePat
 	
 	if (!moFile)
 	{
+		std::clog << "WARNING: Localisation file not found : " << newPath << std::endl;
 		return LIBINTL_LITE_BOOL_FALSE;
 	}
 
-	return loadMessageCatalogFile(domain, moFile);
+	libintl_lite_bool_t ret = loadMessageCatalogFile(domain, moFile);
+	if (ret == LIBINTL_LITE_BOOL_FALSE)
+	{
+		std::clog << "ERROR: Localisation file did not load : " << newPath << std::endl;
+	}
+
+	return ret;
 }
 
 libintl_lite_bool_t loadMessageCatalogFile(const char* domain, FILE* moFile)
@@ -116,6 +123,7 @@ libintl_lite_bool_t loadMessageCatalogFile(const char* domain, FILE* moFile)
 		{
 			return LIBINTL_LITE_BOOL_TRUE;
 		}
+		std::clog << "INFO: " << numberOfStrings <<" localisation strings loaded for " << domain << std::endl;
 
 		uint32_t offsetOrigTable;
 		if (!readUIn32FromFile(moFile, needsBeToLeConversion, offsetOrigTable)) return LIBINTL_LITE_BOOL_FALSE;
@@ -162,7 +170,7 @@ libintl_lite_bool_t loadMessageCatalogFile(const char* domain, FILE* moFile)
 		if (!domainDup) return LIBINTL_LITE_BOOL_FALSE;
 		closeLoadedMessageCatalog(domain);
 		loadedMessageCatalogPtrsByDomain[domainDup] = newMessageCatalogPtr;
-
+		 
 		return LIBINTL_LITE_BOOL_TRUE;
 	}
 	catch (...)
