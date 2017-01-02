@@ -89,7 +89,7 @@ libintl_lite_bool_t loadMessageCatalog(const char* domain, const char* moFilePat
 	{
 		std::clog << "ERROR: Localisation file did not load : " << newPath << std::endl;
 	}
-
+	std::clog << "INFO: Localisation file loaded : " << newPath << std::endl;
 	return ret;
 }
 
