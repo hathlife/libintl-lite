@@ -13,6 +13,6 @@ LOCAL_C_INCLUDES := $(LIBINTLLITE_SRC_PATH)internal
 
 LOCAL_SRC_FILES := \
 	$(LIBINTLLITE_SRC_PATH)internal/libintl.cpp
-LOCAL_LDLIBS := -ldl -llog
+
 
 include $(BUILD_STATIC_LIBRARY)
