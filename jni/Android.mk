@@ -1,0 +1,18 @@
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LIBINTLLITE_SRC_PATH := ../
+
+LOCAL_MODULE := libintl
+
+LOCAL_CFLAGS := -DANDROID_NDK \
+		-DFT2_BUILD_LIBRARY=1
+
+LOCAL_C_INCLUDES := $(LIBINTLLITE_SRC_PATH)internal 
+
+LOCAL_SRC_FILES := \
+	$(LIBINTLLITE_SRC_PATH)internal/libintl.cpp
+
+
+include $(BUILD_STATIC_LIBRARY)
