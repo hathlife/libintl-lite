@@ -7,7 +7,7 @@ $ANDROID_AR rs ../libintl.a libintl.o
 
 cd ..
 
-INSTALL_PREFIX=$ANDROID_TOOLCHAIN_ROOT/sysroot/usr/
+INSTALL_PREFIX=$ANDROID_TOOLCHAIN_ROOT/sysroot/usr
 
 cp libintl.a $INSTALL_PREFIX/lib
 cp libintl.h $INSTALL_PREFIX/include
